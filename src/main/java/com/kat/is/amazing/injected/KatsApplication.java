@@ -8,6 +8,7 @@ import java.util.List;
 public class KatsApplication extends RoboApplication {
     @Override
     protected void addApplicationModules(List<Module> modules) {
+        modules.add(new KatsModule());
         super.addApplicationModules(modules);
     }
 }

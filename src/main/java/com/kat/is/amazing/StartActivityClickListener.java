@@ -10,14 +10,14 @@ public class StartActivityClickListener implements View.OnClickListener {
 
     private Class<?> activityToStart;
 
-    public void setActivityClass(Class<?> activityToStart) {
-        this.activityToStart = activityToStart;
-    }
-
     @Override
     public void onClick(View view) {
         Intent intent = new Intent();
         intent.setClass(contextWrapper, activityToStart);
         contextWrapper.startActivity(intent);
+    }
+
+    public void setActivityClass(Class<?> activityToStart) {
+        this.activityToStart = activityToStart;
     }
 }
