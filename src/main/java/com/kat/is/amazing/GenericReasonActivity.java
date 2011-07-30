@@ -1,6 +1,7 @@
 package com.kat.is.amazing;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.google.inject.Inject;
@@ -11,6 +12,7 @@ public class GenericReasonActivity extends RoboActivity {
     @Inject ShowPopupClickListener popupClickListener;
     @Inject StartActivityClickListener startActivityClickListener;
 
+    @InjectView(R.id.root) View root;
     @InjectView(R.id.message) TextView message;
     @InjectView(R.id.next_button) ImageButton nextButton;
 
@@ -21,7 +23,9 @@ public class GenericReasonActivity extends RoboActivity {
         setContentView(R.layout.generic_layout);
     }
 
-    void setupView(String messageText, String popupTitle, String popupMessage, Class<?> nextActivity) {
+    void setupView(String messageText, String popupTitle, String popupMessage, Class<?> nextActivity, int backgroundResource) {
+        root.setBackgroundResource(backgroundResource);
+
         message.setText(messageText);
         popupClickListener.setInfo(popupTitle, popupMessage);
         message.setOnClickListener(popupClickListener);

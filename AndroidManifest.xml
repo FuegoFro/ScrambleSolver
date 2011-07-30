@@ -6,8 +6,8 @@
         >
     <application android:name="com.kat.is.amazing.injected.KatsApplication"
                  android:label="@string/app_name"
-                 android:icon="@drawable/icon"
-                 android:theme="@android:style/Theme.Black.NoTitleBar"
+                 android:icon="@drawable/logo"
+                 android:theme="@style/kats_style"
             >
         <activity android:name="com.kat.is.amazing.HomeActivity"
                   android:label="@string/app_name">
@@ -17,8 +17,32 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.kat.is.amazing.GenericReasonActivity"/>
-        <activity android:name="com.kat.is.amazing.MoviesActivity"/>
-        <activity android:name="com.kat.is.amazing.NerdyActivity"/>
+        <activity android:name="com.kat.is.amazing.GenericReasonActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.MoviesActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.NerdyActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.WeirdActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.SillyActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.SexyActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.ThereActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.LoveActivity"
+                  android:screenOrientation="portrait"
+                />
+        <activity android:name="com.kat.is.amazing.MineActivity"
+                  android:screenOrientation="portrait"
+                />
     </application>
 </manifest> 

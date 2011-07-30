@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@drawable/love"
+        >
+
+    <TextView android:id="@+id/message"
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent"
+              android:gravity="center"
+              android:textSize="55dip"
+            />
+
+    <LinearLayout android:layout_height="wrap_content"
+                  android:layout_width="wrap_content"
+                  android:gravity="center"
+                  android:layout_gravity="bottom|center_horizontal"
+                  android:orientation="vertical"
+            >
+
+        <Button android:id="@+id/how_much_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="How much?"
+                />
+
+        <ImageButton android:id="@+id/next_button"
+                     android:layout_height="wrap_content"
+                     android:layout_width="wrap_content"
+                     android:src="@drawable/icon"
+                />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -14,6 +14,7 @@ public class StartActivityClickListener implements View.OnClickListener {
     public void onClick(View view) {
         Intent intent = new Intent();
         intent.setClass(contextWrapper, activityToStart);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         contextWrapper.startActivity(intent);
     }
 

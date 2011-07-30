@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/root"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:background="@drawable/end"
+        >
+
+    <ImageView android:layout_height="wrap_content"
+               android:layout_width="wrap_content"
+               android:layout_gravity="center"
+               android:src="@drawable/heart"
+            />
+
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_gravity="top|center_horizontal"
+              android:gravity="center"
+              android:text="And you're mine"
+              android:textSize="55dip"
+            />
+
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="fill_parent"
+              android:layout_gravity="bottom|center_horizontal"
+              android:gravity="center"
+              android:text="And that's all that matters."
+              android:textSize="55dip"
+            />
+
+    <Button android:id="@+id/home_button"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:text="Start\nOver"
+            android:textSize="12dip"
+            android:visibility="gone"
+            />
+
+</FrameLayout>

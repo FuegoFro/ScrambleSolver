@@ -8,9 +8,10 @@ public class NerdyActivity extends GenericReasonActivity {
         super.onCreate(savedInstanceState);
         setupView(
                 "You are wonderfully nerdy",
-                "",
+                "Love",
                 "Nerdy Story",
-                MoviesActivity.class
+                WeirdActivity.class,
+                R.drawable.nerdy
         );
     }
 }
