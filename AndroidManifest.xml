@@ -1,48 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.kat.is.amazing"
+          package="com.aloe.scramblesolver"
           android:versionCode="1"
           android:versionName="1.0"
         >
-    <application android:name="com.kat.is.amazing.injected.KatsApplication"
+    <application android:name="com.aloe.scramblesolver.injected.ScrambleSolverApplication"
                  android:label="@string/app_name"
-                 android:icon="@drawable/logo"
-                 android:theme="@style/kats_style"
+                 android:theme="@style/scramblesolver_style"
             >
-        <activity android:name="com.kat.is.amazing.HomeActivity"
-                  android:label="@string/app_name">
+        <activity android:name="com.aloe.scramblesolver.HomeActivity"
+                  android:label="@string/app_name"
+                  android:theme="@style/Theme.Transparent"
+                >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <activity android:name="com.kat.is.amazing.GenericReasonActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.MoviesActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.NerdyActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.WeirdActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.SillyActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.SexyActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.ThereActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.LoveActivity"
-                  android:screenOrientation="portrait"
-                />
-        <activity android:name="com.kat.is.amazing.MineActivity"
-                  android:screenOrientation="portrait"
-                />
     </application>
 </manifest> 
