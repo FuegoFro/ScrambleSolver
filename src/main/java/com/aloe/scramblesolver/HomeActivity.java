@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,7 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class HomeActivity extends RoboActivity {
     public static final String TAG = "Scramble Solver";
@@ -61,63 +61,97 @@ public class HomeActivity extends RoboActivity {
 
                 IoctlParser frameBufferData = new IoctlParser(ioctl);
 
-                int size = frameBufferData.xres * frameBufferData.yres * frameBufferData.bitsPerPixel * 2;
+                int size = frameBufferData.xres * frameBufferData.yres * (frameBufferData.bitsPerPixel / 8);
                 byte[] pixelBuffer = new byte[size];
                 BufferedInputStream screenshot = new BufferedInputStream(new FileInputStream(frame));
-                assert screenshot.read(pixelBuffer, 0, size) == size;
-                assert false;
+
+                int read = screenshot.read(pixelBuffer, 0, size);
+                if (read != size) {
+                    throw new RuntimeException("Did not read all teh bytes. Read: " + read);
+                }
+                Log.e(TAG, "Read = " + read);
+                if (!frame.delete()) {
+                    throw new RuntimeException("Did not delete teh frame");
+                }
 
 
                 Bitmap.Config config;
+                int[] colorOffsets = new int[4];
                 if (frameBufferData.bitsPerPixel == 16) {
                     config = Bitmap.Config.RGB_565;
                 } else if (frameBufferData.bitsPerPixel == 32) {
                     config = Bitmap.Config.ARGB_8888;
                     // USE ARGB_8888 -- need to normalize pixel order
-                    if (frameBufferData.transpOffset != 24 ||
-                            frameBufferData.redOffset != 16 ||
-                            frameBufferData.greenOffset != 8 ||
-                            frameBufferData.blueOffset != 0) {
-                        throw new RuntimeException("We don't support this format yet");
+                    colorOffsets[frameBufferData.transpOffset / 8] = 24;
+                    colorOffsets[frameBufferData.redOffset / 8] = 16;
+                    colorOffsets[frameBufferData.greenOffset / 8] = 8;
+                    colorOffsets[frameBufferData.blueOffset / 8] = 0;
+
+
+                    boolean shouldSwitch = false;
+                    for (int i = 0; i < 100; i++) {
+                        if (pixelBuffer[(i * 4) + (frameBufferData.transpOffset / 8)] != (byte) 0xff) {
+                            int fourFromEnd = i*4;
+                            Log.e(TAG, "transparent pos is: " + (frameBufferData.transpOffset / 8) + " transp byte is: " + Integer.toHexString(pixelBuffer[(i * 4) + (frameBufferData.transpOffset / 8)]));
+                            Log.e(TAG, "last 4 bytes: " +
+                                    Integer.toHexString(pixelBuffer[fourFromEnd]) + " " +
+                                    Integer.toHexString(pixelBuffer[fourFromEnd + 1]) + " " +
+                                    Integer.toHexString(pixelBuffer[fourFromEnd + 2]) + " " +
+                                    Integer.toHexString(pixelBuffer[fourFromEnd + 3])
+                            );
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+
+                    if (shouldSwitch) {
+                        Log.e(TAG, "SWITCHING");
+                        int tmp1 = colorOffsets[0];
+                        colorOffsets[0] = colorOffsets[3];
+                        colorOffsets[3] = tmp1;
+
+                        int tmp2 = colorOffsets[1];
+                        colorOffsets[1] = colorOffsets[2];
+                        colorOffsets[2] = tmp2;
+                    }
+
+
+                    Log.e(TAG, "red: " + frameBufferData.redOffset + ", green: " + frameBufferData.greenOffset + ", blue: " + frameBufferData.blueOffset + ", transparent: " + frameBufferData.transpOffset);
+                    Log.e(TAG, "colorOffsets: " + Arrays.toString(colorOffsets));
+                } else {
+                    Log.e(TAG, "bpp: " + frameBufferData.bitsPerPixel);
+                    throw new RuntimeException("We don't support this format yet");
+                }
+
+                int[] pixels = new int[size / 4];
+                for (int i = 0, pixelLength = pixels.length; i < pixelLength; i++) {
+                    for (int j = 0; j < 4; j++) {
+                        int color = pixelBuffer[(i * 4) + j] & 0xff;
+                        pixels[i] |= color << colorOffsets[j];
                     }
                 }
 
+                int fourFromEnd = pixelBuffer.length - 4;
+                Log.e(TAG, "Last pixel: " + Integer.toHexString(pixels[pixels.length - 1]));
+                Log.e(TAG, "last 4 bytes: " +
+                        Integer.toHexString(pixelBuffer[fourFromEnd]) + " " +
+                        Integer.toHexString(pixelBuffer[fourFromEnd + 1]) + " " +
+                        Integer.toHexString(pixelBuffer[fourFromEnd + 2]) + " " +
+                        Integer.toHexString(pixelBuffer[fourFromEnd + 3])
+                );
 
-                DisplayMetrics dm = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(dm);
-                int width = dm.widthPixels;
-                int height = dm.heightPixels;
-                int screenshotSize = width * height * 2;
-
-                Log.e(TAG, "Got screen size, reading buffer");
-
-//                byte[] buffer = new byte[screenshotSize];
-//                BufferedInputStream is = new BufferedInputStream(new FileInputStream(new File(sdcardPath, "frame.raw")));
-//                int read = is.read(buffer, 0, screenshotSize);
-//
-//                Log.e(TAG, "Read " + read + " bytes to buffer, converting to int[]");
-//
-//                ByteBuffer bb = ByteBuffer.allocateDirect(screenshotSize);
-//                bb.order(ByteOrder.nativeOrder());
-//                bb.put(buffer);
-//                int[] pixels = new int[screenshotSize];
-//                bb.asIntBuffer().get(pixels);
-//
-//                Log.e(TAG, "Converted to int[], setting on Bitmap");
+//                Log.e(TAG, "Size: " + size + ", pixels: " + pixels.length + ", pixelBuffer: " + pixelBuffer.length);
+//                Log.e(TAG, "nonZero: " + nonZero);
 
                 Log.e(TAG, "Reading in and converting bitmap");
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.RGB_565;
-                options.outHeight = height;
-                options.outWidth = width;
+                options.inPreferredConfig = config;
+                options.outHeight = frameBufferData.yres;
+                options.outWidth = frameBufferData.xres;
 
-                Bitmap bm = BitmapFactory.decodeFile(frame.getPath(), options);
-
-                if (bm == null) {
-                    Log.e(TAG, "bm is null");
-                    return;
-                }
+                Bitmap bm = Bitmap.createBitmap(frameBufferData.xres, frameBufferData.yres, config);
+                bm.setPixels(pixels, 0, frameBufferData.xres, 0, 0, frameBufferData.xres, frameBufferData.yres);
 
                 Log.e(TAG, "Saving bitmap to sdcard");
 
