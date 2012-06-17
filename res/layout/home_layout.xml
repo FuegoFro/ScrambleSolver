@@ -1,38 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:id="@+id/main_layout"
-             android:layout_height="fill_parent"
-             android:layout_width="fill_parent"
-             android:orientation="vertical"
-             android:background="#00000000"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
         >
 
-    <LinearLayout android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:layout_gravity="center"
-                  android:padding="3dip"
-                  android:background="#0F0"
-                  android:orientation="vertical"
-            >
+    <Button android:id="@+id/start_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Overlay"
+            />
 
-        <TextView android:layout_height="wrap_content"
-                  android:layout_width="wrap_content"
-                  android:gravity="center"
-                  android:text="Try to take a screenshot"
-                  android:textColor="#FF000000"
-                  android:textSize="20dip"
-                />
+    <Button android:id="@+id/stop_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop Overlay"
+            />
 
-        <Button android:id="@+id/screenshot_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Take Screenshot"
-                android:padding="3dip"
-                android:layout_margin="3dip"
-                android:layout_gravity="center_horizontal"
-                />
-
-    </LinearLayout>
-
-</RelativeLayout>
-
+</LinearLayout>
