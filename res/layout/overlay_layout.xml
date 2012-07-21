@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <com.aloe.scramblesolver.OverlayView xmlns:android="http://schemas.android.com/apk/res/android"
                                      android:id="@+id/main_layout"
-                                     android:layout_height="fill_parent"
-                                     android:layout_width="fill_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_width="wrap_content"
                                      android:orientation="vertical"
-                                     android:background="#00000000"
+                                     android:background="#FF0000"
         >
+                                     <!--android:background="#00000000"-->
 
     <Button android:id="@+id/screenshot_button"
             android:layout_height="wrap_content"
@@ -18,4 +18,3 @@
             />
 
 </com.aloe.scramblesolver.OverlayView>
-        <!--</FrameLayout>-->

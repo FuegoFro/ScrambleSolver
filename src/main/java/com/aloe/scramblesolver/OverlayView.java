@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -32,6 +33,7 @@ class OverlayView extends FrameLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         Button button = (Button) findViewById(R.id.screenshot_button);
+        button.setOnClickListener(new TakeScreenshotClickListener());
         int[] location = new int[2];
         button.getLocationOnScreen(location);
         x = location[0];
@@ -167,6 +169,13 @@ class OverlayView extends FrameLayout {
             throw new RuntimeException(e.getMessage());
         } catch (InterruptedException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    class TakeScreenshotClickListener implements OnClickListener {
+        @Override
+        public void onClick(View view) {
+            takeScreenshot();
         }
     }
 }
