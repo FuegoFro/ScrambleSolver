@@ -11,6 +11,7 @@ public class HomeActivity extends RoboActivity {
     private static final String TAG = "Scramble Solver Activity";
     @InjectView(R.id.start_service) Button startService;
     @InjectView(R.id.stop_service) Button stopService;
+    @InjectView(R.id.take_screenshot) Button takeScreenshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class HomeActivity extends RoboActivity {
 
         startService.setOnClickListener(new StartServiceClickListener());
         stopService.setOnClickListener(new StopServiceClickListener());
+        takeScreenshot.setOnClickListener(new TakeScreenshotClickListener());
 
     }
 
@@ -33,6 +35,13 @@ public class HomeActivity extends RoboActivity {
         @Override
         public void onClick(View view) {
             stopService(new Intent(HomeActivity.this, ScreenshotService.class));
+        }
+    }
+
+    private class TakeScreenshotClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            ScreenshotTaker.takeScreenshot();
         }
     }
 }

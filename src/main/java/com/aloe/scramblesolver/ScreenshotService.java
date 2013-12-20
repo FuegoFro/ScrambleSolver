@@ -1,5 +1,6 @@
 package com.aloe.scramblesolver;
 
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
@@ -7,15 +8,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import com.google.inject.Inject;
-import roboguice.service.RoboService;
 
-public class ScreenshotService extends RoboService {
+public class ScreenshotService extends Service {
     public static final String TAG = "Scramble Solver Service";
 
     private View overlay;
-
-    @Inject LayoutInflater layoutInflater;
 
     @Override
     public void onCreate() {
@@ -29,6 +26,7 @@ public class ScreenshotService extends RoboService {
         params.width = WindowManager.LayoutParams.WRAP_CONTENT;
         params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         overlay = layoutInflater.inflate(R.layout.overlay_layout, null);
         wm.addView(overlay, params);
     }
