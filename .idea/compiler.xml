@@ -6,6 +6,8 @@
       <directory url="file://$PROJECT_DIR$/target/generated-sources/r" includeSubdirectories="true" />
       <directory url="file:///mnt/data/Users/Danny/Dropbox/ScrambleSolver/target/generated-sources/r" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/gen" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/tesseract-android-tools/tesseract-android-tools/gen" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/tesseract-android-tools/tesseract-android-tools-test/gen" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
@@ -20,10 +22,18 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-target 1.6" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="scramble-solver" />
+      </profile>
+    </annotationProcessing>
   </component>
 </project>
 

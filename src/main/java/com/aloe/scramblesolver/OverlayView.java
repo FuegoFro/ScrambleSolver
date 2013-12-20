@@ -10,12 +10,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.*;
 import java.util.Arrays;
 
 class OverlayView extends FrameLayout {
     private static final String TAG = "Scramble Solver View";
+    public static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/SimpleAndroidOCR/";
+    public static final String lang = "eng";
     private int x;
     private int y;
     private int height;
@@ -45,6 +48,7 @@ class OverlayView extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.e(TAG, event.getX() + ", " + event.getY());
         if (x <= event.getX() && event.getX() <= x + width &&
                 y <= event.getY() && event.getY() <= y + height) {
             Log.e(ScreenshotService.TAG, "You touched me! (" + event.getX() + ", " + event.getY() + ")");
@@ -55,6 +59,7 @@ class OverlayView extends FrameLayout {
 
     public void takeScreenshot() {
         try {
+            Log.e(TAG, "START");
             // Todo: put this in a temp directory/make sure you're not overwriting something
             String sdcardPath = Environment.getExternalStorageDirectory()
                     .toString();
@@ -75,6 +80,7 @@ class OverlayView extends FrameLayout {
             stdin.flush();
             process.waitFor();
 
+            Log.e(TAG, "Got buffer");
 
             IoctlParser frameBufferData = new IoctlParser(ioctl);
 
@@ -110,7 +116,7 @@ class OverlayView extends FrameLayout {
                 boolean shouldSwitch = false;
                 for (int i = 0; i < 100; i++) {
                     if (pixelBuffer[(i * 4) + (frameBufferData.transpOffset / 8)] != (byte) 0xff) {
-                        int fourFromEnd = i*4;
+                        int fourFromEnd = i * 4;
                         Log.e(TAG, "transparent pos is: " + (frameBufferData.transpOffset / 8) + " transp byte is: " + Integer.toHexString(pixelBuffer[(i * 4) + (frameBufferData.transpOffset / 8)]));
                         Log.e(TAG, "last 4 bytes: " +
                                 Integer.toHexString(pixelBuffer[fourFromEnd]) + " " +
@@ -155,6 +161,22 @@ class OverlayView extends FrameLayout {
 
             Bitmap bm = Bitmap.createBitmap(frameBufferData.xres, frameBufferData.yres, config);
             bm.setPixels(pixels, 0, frameBufferData.xres, 0, 0, frameBufferData.xres, frameBufferData.yres);
+
+            TessBaseAPI baseApi = new TessBaseAPI();
+            Log.e(TAG, "Made base api");
+            // DATA_PATH = Path to the storage
+            // lang for which the language data exists, usually "eng"
+            baseApi.init(DATA_PATH, lang);
+            Log.e(TAG, "Initialized base api");
+            baseApi.setImage(bm);
+            Log.e(TAG, "set image");
+            String recognizedText = baseApi.getUTF8Text();
+            Log.e(TAG, "recognized text");
+            baseApi.end();
+            Log.e(TAG, "ended");
+
+            Log.e(TAG, recognizedText);
+
 
             Log.e(TAG, "Saving bitmap to sdcard");
 
